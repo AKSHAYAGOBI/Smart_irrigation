@@ -1,0 +1,38 @@
+// Define pins
+const int sensorPin = A0;  // Analog pin for water sensor
+const int relayPin = 7;    // Digital pin for relay module
+
+// Define threshold value for water detection
+const int threshold = 500; // Adjust based on your sensor's calibration
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(9600);
+  
+  // Set the relay pin as an OUTPUT
+  pinMode(relayPin, OUTPUT);
+  
+  // Ensure the motor is OFF initially
+  digitalWrite(relayPin, HIGH);  // HIGH means relay OFF (for active-low relay)
+}
+
+void loop() {
+  // Read the sensor value
+  int sensorValue = analogRead(sensorPin);
+  
+  // Print the sensor value to the Serial Monitor
+  Serial.print("Sensor Value: ");
+  Serial.println(sensorValue);
+  
+  // If sensor detects water, turn ON motor
+  if (sensorValue > threshold) {
+    digitalWrite(relayPin, LOW);   // Turn ON motor (active-low relay)
+    Serial.println("Water detected - Motor ON");
+  } else {
+    digitalWrite(relayPin, HIGH);  // Turn OFF motor
+    Serial.println("No water - Motor OFF");
+  }
+  
+  // Wait before next reading
+  delay(1000); // 1 second delay
+}
